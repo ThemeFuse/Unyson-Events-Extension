@@ -1,0 +1,32 @@
+/* table header */
+.fw-option-type-tickets .required:after {
+	content: '*';
+	color: #FF0000;
+}
+/* .table header */
+
+/* custom option columns */
+.fw-option-type-tickets .tickets-name{
+	width: auto;
+	box-sizing: border-box;
+	padding-right: 5%;
+}
+
+.fw-option-type-tickets .tickets-name .fw-ticket-cell-inner-option {
+	width: 100%;
+}
+
+.fw-option-type-tickets .tickets-quantity {
+	width: 15%;
+}
+.fw-option-type-tickets .tickets-price{
+	width: 15%;
+}
+/* .custom option columns */
+
+/* buttons */
+.fw-option-type-tickets .fw-btn-large {
+	width: 110px;
+	text-align: center;
+}
+/* .buttons */

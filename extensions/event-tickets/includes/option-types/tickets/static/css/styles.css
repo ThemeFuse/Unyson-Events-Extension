@@ -1,0 +1,142 @@
+/* wraper .fw-option-type-tickets */
+
+.fw-backend-option-type-tickets {
+	padding-left: 0;
+	padding-top: 0;
+	padding-right: 0;
+}
+
+.fw-option-type-tickets .fw-option-tickets-tab {
+	display: block;
+}
+
+.fw-option-type-tickets .fw-option-tickets-tab.first {
+	padding: 50px 0;
+}
+
+.fw-option-type-tickets .btn-group .fw-add-row-btn {
+	display: inline-block;
+}
+
+.fw-backend-option-type-tickets .msg {
+	font-style: italic;
+	color: #666;
+	line-height: 3em;
+}
+
+.fw-option-type-tickets .center{
+	text-align: center;
+}
+.fw-option-type-tickets .left{
+	text-align: left;
+}
+.fw-option-type-tickets .right{
+	text-align: right;
+}
+
+.fw-option-type-tickets .fw-buttons-holder {
+	width: 100%;
+	box-sizing: border-box;
+}
+.fw-option-type-tickets .fw-option-tickets-tab.second .fw-buttons-holder {
+	padding: 25px 25px 0 25px;
+}
+
+.fw-option-type-tickets .fw-tab-closed {
+	display: none;
+}
+
+/* table */
+.fw-option-type-tickets .fw-tickets-table,
+.fw-option-type-tickets .fw-tickets-tbody,
+.fw-option-type-tickets .fw-tickets-thead {
+	display: table;
+	border-collapse:collapse;
+	width: 100%;
+}
+
+.fw-option-type-tickets label {
+	font-weight: 600;
+}
+
+.fw-option-type-tickets .fw-tickets-tbody .fw-ticket-row:hover {
+	background: #f8f8f8;
+}
+
+.fw-option-type-tickets .fw-ticket-row {
+	display: table-row;
+	border-bottom: 1px solid #eeeeee;
+}
+
+.fw-option-type-tickets .fw-fix-border-top {
+	border-top: 1px solid #eeeeee;
+}
+
+.fw-option-type-tickets .fw-ticket-cell {
+	display: table-cell;
+	position: relative;
+	padding: 14px 0;
+	width: 10%;
+	cursor: pointer;
+}
+
+
+/* columns */
+.fw-option-type-tickets .fw-ticket-gripper {
+	width: 20px;
+	padding: 0 5px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.fw-option-type-tickets .actions {
+	width: 80px;
+}
+
+/* .columns */
+/* .table */
+
+/* action buttons  */
+.fw-option-type-tickets .fw-actions-row-popup:hover,
+.fw-option-type-tickets .fw-actions-row-popup,
+.fw-option-type-tickets .fw-actions-row-popup *,
+.fw-option-type-tickets .fw-actions-row-popup *:hover,
+.fw-option-type-tickets .fw-actions-row-popup *:active {
+	border: none;
+	background: none;
+	box-shadow: none;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+.fw-option-type-tickets .fw-actions-remove-row {
+	cursor: pointer;
+	color: #06689e;
+
+	line-height: 1em;
+	display: inline;
+	vertical-align: middle;
+	font-size: 15px;
+}
+
+.fw-option-type-tickets .fw-actions-row-popup .content.button:before,
+.fw-option-type-tickets .fw-actions-row-popup .content.button {
+	font-family: FontAwesome;
+	content: "\f044";
+	color:  #06689e;
+	font-style: normal;
+	font-weight: normal;
+
+	line-height: 1em;
+	vertical-align: middle;
+	display: inline;
+	font-size: 13px;
+}
+/* .action buttons  */
+
+.fw-option-type-tickets .fw-ticket-cell-inner-option {
+	width: 75%;
+	display: inline-block;
+	vertical-align: top;
+}
