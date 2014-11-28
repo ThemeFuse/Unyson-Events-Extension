@@ -280,7 +280,7 @@ class FW_Extension_Events_Tags extends FW_Extension {
 				), true);
 
 				if ($event_post_tag_id == 0 || $event_post_tag_id instanceof WP_Error) {
-					throw new Exception(sprintf(__('wp_insert_post(post_type=%s) failed', 'fw'), $this->post_type));
+					throw new Exception( 'wp_insert_post(post_type=)' . $this->post_type . ' ' . __('failed', 'fw'));
 				}
 
 				add_post_meta($event_post_tag_id, $this->event_from_date_tag, $from_timestamp - (date('H', $from_timestamp)*3600 + date('i', $from_timestamp)*60) );
