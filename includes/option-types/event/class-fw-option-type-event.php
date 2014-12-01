@@ -1,12 +1,19 @@
 <?php if ( ! defined( 'FW' ) ) die( 'Forbidden' );
 
+/**
+ * Class FW_Option_Type_Event
+ *
+ * The option FW_Option_Type_Event is for internal use only.
+ * Do not use it for posts/terms options as it will not affect events functionality.
+ * It works only in the events page.
+ *
+ */
 
 class FW_Option_Type_Event extends FW_Option_Type {
 	private $internal_options = array();
 
 	private static $extension;
 	private $only_date_format = 'Y/m/d';
-	private $date_time_format = 'Y/m/d H:i';
 	private $min_date = '1970/01/01';
 	private $max_date = '2038/01/19';
 
