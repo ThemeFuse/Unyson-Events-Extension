@@ -116,7 +116,7 @@ class FW_Extension_Events extends FW_Extension implements FW_Events_Interface_Ta
 		       "DTSTART:" . $start . "\n" .
 		       "DTEND:" . $end . "\n" .
 		       "SUMMARY:" . $post->post_title . "\n" .
-		       "DESCRIPTION:For details, click here:" . get_permalink( $post->ID ) . "\n" .
+		       "DESCRIPTION:" . __( 'For details, click here', 'fw' ) . ":" . get_permalink( $post->ID ) . "\n" .
 		       "LOCATION:" . $location . "\n" .
 		       "END:VEVENT\n" .
 		       "END:VCALENDAR";

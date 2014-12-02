@@ -16,7 +16,7 @@ function _filter_fw_ext_events_the_content( $the_content ) {
 	 */
 	$events = fw()->extensions->get( 'events' );
 
-	return fw_render_view( $events->locate_view_path( 'hook-single' ), array( 'the_content' => $the_content ) );
+	return fw_render_view( $events->locate_view_path( 'content' ), array( 'the_content' => $the_content ) );
 }
 
 /**
