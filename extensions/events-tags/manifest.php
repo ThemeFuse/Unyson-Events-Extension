@@ -12,6 +12,5 @@ $manifest['standalone'] = true;
 $manifest['requirements'] = array(
 	'extensions' => array(
 		'shortcodes' => array(),
-		'events' => array()
 	)
 );
