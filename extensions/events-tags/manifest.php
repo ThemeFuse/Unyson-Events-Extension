@@ -9,3 +9,9 @@ $manifest['description'] = __( 'Connect extension event with shortcodes map & ca
 $manifest['version'] = '1.0.0';
 $manifest['display'] = 'event';
 $manifest['standalone'] = true;
+$manifest['requirements'] = array(
+	'extensions' => array(
+		'shortcodes' => array(),
+		'events' => array()
+	)
+);
