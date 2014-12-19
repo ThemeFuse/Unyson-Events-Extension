@@ -42,4 +42,4 @@ $options = fw_get_db_post_option($post->ID, fw()->extensions->get( 'events' )->g
 
 <?php echo $the_content; ?>
 
-<?php do_action('fw_theme_ext_events_after_content'); ?>
+<?php do_action('fw_ext_events_single_after_content'); ?>
