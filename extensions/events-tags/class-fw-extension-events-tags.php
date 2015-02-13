@@ -108,7 +108,7 @@ class FW_Extension_Events_Tags extends FW_Extension {
 				$meta                            = fw_get_db_post_option( $post->ID, $this->get_parent()->get_event_option_id() );
 				$location = trim(fw_akg('event_location/location', $meta, ''));
 				if (false === empty($location)) {
-					$result[$key]['title']       = $post->post_title;
+					$result[$key]['title']       = htmlspecialchars_decode($post->post_title);
 					$result[$key]['coordinates'] = fw_akg('event_location/coordinates', $meta, array());
 					$result[$key]['url']         = get_permalink( $post->ID );
 					$result[$key]['thumb']       = fw_resize(wp_get_attachment_url(get_post_thumbnail_id($post->ID)), 100, 60, true);
@@ -421,7 +421,7 @@ class FW_Extension_Events_Tags extends FW_Extension {
 				$return_value[$i]['start'] = $interval['start'];
 				$return_value[$i]['end']   = $interval['end'];
 				$return_value[$i]['id']    = $event_id;
-				$return_value[$i]['title'] = $title;
+				$return_value[$i]['title'] = htmlspecialchars_decode($title);
 				$return_value[$i]['url']   = $url;
 				$i++;
 			}
