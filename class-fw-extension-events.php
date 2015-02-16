@@ -36,7 +36,7 @@ class FW_Extension_Events extends FW_Extension
 
 	public function _get_link()
 	{
-		return 'edit.php?post_type=' . $this->get_post_type_name();
+		return self_admin_url('edit.php?post_type=' . $this->get_post_type_name());
 	}
 
 	/**
