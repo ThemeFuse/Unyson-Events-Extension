@@ -181,12 +181,11 @@ class FW_Extension_Events extends FW_Extension
 	 * @internal
 	 */
 	public function _filter_add_columns( $columns ) {
-		return array(
-			'cb'             => $columns['cb'],
-			'title'          => $columns['title'],
+		unset($columns['date'], $columns['taxonomy-'.$this->taxonomy_name]);
+		return array_merge( $columns, array(
 			'event_date'     => __( 'Date', 'fw' ),
-			'event_location' => __( 'Location', 'fw' ),
-		);
+			'event_location' => __( 'Location', 'fw' )
+		));
 	}
 
 	/**
