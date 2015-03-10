@@ -339,7 +339,7 @@ class FW_Extension_Events_Tags extends FW_Extension {
 				$sql .= ' , ' . $wpdb->term_taxonomy . '.term_id as \'term_id\'';
 			}
 
-			$sql .= ' FROM '. $wpdb->postmeta .' INNER JOIN wp_posts ON ( ' . $wpdb->posts . '.ID=' . $wpdb->postmeta . '.post_id AND '. $wpdb->posts .'.post_type=\'' .$this->post_type .'\') ' .
+			$sql .= ' FROM '. $wpdb->postmeta .' INNER JOIN ' .  $wpdb->posts . ' ON ( ' . $wpdb->posts . '.ID=' . $wpdb->postmeta . '.post_id AND '. $wpdb->posts .'.post_type=\'' .$this->post_type .'\') ' .
 			'INNER JOIN '. $wpdb->postmeta .' AS to_date   ON ( to_date.meta_key=\'' . $this->event_to_date_tag . '\'   AND to_date.post_id   = '. $wpdb->postmeta .'.post_id ) ' .
 			'INNER JOIN '. $wpdb->postmeta .' AS from_date ON ( from_date.meta_key=\''. $this->event_from_date_tag .'\' AND from_date.post_id = '. $wpdb->postmeta .'.post_id ) ' .
 			'LEFT JOIN '. $wpdb->postmeta .'  AS all_day   ON ( all_day.meta_key=\''. $this->all_day_tag .'\'           AND all_day.post_id   = '. $wpdb->postmeta .'.post_id ) ' .
