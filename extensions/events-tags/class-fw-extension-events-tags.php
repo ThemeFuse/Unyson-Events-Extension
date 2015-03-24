@@ -242,6 +242,38 @@ class FW_Extension_Events_Tags extends FW_Extension {
 	private function admin_actions() {
 		add_action( 'fw_save_post_options', array( $this, '_action_admin_on_save_event' ) );
 		add_action( 'before_delete_post', array( $this, '_action_admin_on_delete_event' ) );
+
+		$time = (int) $this->get_db_data('last_updated', 0);
+
+		if ( ( time() - $time ) > ( 86400 + 5 ) ) {
+			$this->update_events();
+			$this->set_db_data('last_updated', time());
+		}
+	}
+
+	/**
+	 * @internal
+	 *
+	 * @param int $offset
+	 **/
+	private function update_events( $offset = 0 ) {
+		$posts = get_posts( array(
+			'post_type'      => $this->parent->get_post_type_name(),
+			'posts_per_page' => 100,
+			'offset'         => $offset
+		) );
+
+		$offset += 100;
+
+		if ( empty( $posts ) ) {
+			return;
+		}
+
+		foreach ( $posts as $post ) {
+			$this->_action_admin_on_save_event( $post->ID );
+		}
+
+		$this->update_events( $offset );
 	}
 
 	public function _action_admin_on_save_event( $post_id ) {
@@ -340,11 +372,16 @@ class FW_Extension_Events_Tags extends FW_Extension {
 					continue;
 				}
 
+				$terms = wp_get_post_terms( $post_id, $this->parent->get_taxonomy_name(), array( 'fields' => 'ids' ) );
+
 				$event_post_tag_id = wp_insert_post(
 					array(
 						'post_parent' => $post_id,
 						'post_type'   => $this->post_type,
-						'post_status' => 'publish'
+						'post_status' => 'publish',
+						'tax_input'   => array(
+							$this->parent->get_taxonomy_name() => $terms
+						)
 					), true );
 
 				if ( $event_post_tag_id == 0 || $event_post_tag_id instanceof WP_Error ) {
@@ -452,14 +489,15 @@ class FW_Extension_Events_Tags extends FW_Extension {
 			$args['tax_query'] = array(
 				array(
 					'taxonomy' => $this->parent->get_taxonomy_name(),
-					'field'    => 'ids',
-					'terms'    => array( $terms_ids ),
+					'field'    => 'id',
+					'terms'    => $terms_ids,
 					'operator' => 'IN'
 				)
 			);
 		}
 
 		$posts = new WP_Query( $args );
+
 		$items = $posts->get_posts();
 
 		$result = array();
