@@ -174,6 +174,8 @@ class FW_Extension_Events_Tags extends FW_Extension {
 	/**
 	 * Fill shortcode Calendar with initial data
 	 *
+	 * @internal
+	 *
 	 * @param $value - list of data providers
 	 *
 	 * @return mixed
@@ -197,6 +199,8 @@ class FW_Extension_Events_Tags extends FW_Extension {
 
 	/**
 	 * Saved option 'events_category' sets as ajax parameter
+	 *
+	 * @internal
 	 *
 	 * @param array $value - presetted ajax parameters (e.g. array('ajax_post_param' => 'string value') )
 	 * @param string $provider - choosen data provider
@@ -254,28 +258,8 @@ class FW_Extension_Events_Tags extends FW_Extension {
 	/**
 	 * @internal
 	 *
-	 * @param int $offset
-	 **/
-	private function update_events( $offset = 0 ) {
-		$posts = get_posts( array(
-			'post_type'      => $this->parent->get_post_type_name(),
-			'posts_per_page' => 100,
-			'offset'         => $offset
-		) );
-
-		$offset += 100;
-
-		if ( empty( $posts ) ) {
-			return;
-		}
-
-		foreach ( $posts as $post ) {
-			$this->_action_admin_on_save_event( $post->ID );
-		}
-
-		$this->update_events( $offset );
-	}
-
+	 * @param $post_id
+	 */
 	public function _action_admin_on_save_event( $post_id ) {
 		if ( get_post_type( $post_id ) !== $this->parent->get_post_type_name() or ! fw_is_real_post_save( $post_id ) ) {
 			return;
@@ -285,6 +269,11 @@ class FW_Extension_Events_Tags extends FW_Extension {
 		$this->_fw_insert_all_event_children_data( $post_id );
 	}
 
+	/**
+	 * @internal
+	 *
+	 * @param $post_id
+	 */
 	public function _action_admin_on_delete_event( $post_id ) {
 		if ( get_post_type( $post_id ) !== $this->parent->get_post_type_name() ) {
 			return;
@@ -292,6 +281,9 @@ class FW_Extension_Events_Tags extends FW_Extension {
 		$this->_fw_remove_all_event_children_data( $post_id );
 	}
 
+	/**
+	 * @internal
+	 */
 	public function _action_register_post_type_tags() {
 
 		register_post_type( $this->post_type, array(
@@ -514,6 +506,30 @@ class FW_Extension_Events_Tags extends FW_Extension {
 		return $result;
 	}
 
+	/**
+	 * @internal
+	 *
+	 * @param int $offset
+	 **/
+	private function update_events( $offset = 0 ) {
+		$posts = get_posts( array(
+			'post_type'      => $this->parent->get_post_type_name(),
+			'posts_per_page' => 100,
+			'offset'         => $offset
+		) );
+
+		$offset += 100;
+
+		if ( empty( $posts ) ) {
+			return;
+		}
+
+		foreach ( $posts as $post ) {
+			$this->_action_admin_on_save_event( $post->ID );
+		}
+
+		$this->update_events( $offset );
+	}
 
 	/**
 	 * Prepare data structure compatible with shortcode Calendar
