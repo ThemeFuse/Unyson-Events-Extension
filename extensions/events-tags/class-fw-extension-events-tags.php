@@ -247,11 +247,11 @@ class FW_Extension_Events_Tags extends FW_Extension {
 		add_action( 'fw_save_post_options', array( $this, '_action_admin_on_save_event' ) );
 		add_action( 'before_delete_post', array( $this, '_action_admin_on_delete_event' ) );
 
-		$time = (int) $this->get_db_data('last_updated', 0);
+		$time = (int) $this->get_db_data( 'last_updated', 0 );
 
 		if ( ( time() - $time ) > ( 86400 + 5 ) ) {
 			$this->update_events();
-			$this->set_db_data('last_updated', time());
+			$this->set_db_data( 'last_updated', time() );
 		}
 	}
 
@@ -391,7 +391,8 @@ class FW_Extension_Events_Tags extends FW_Extension {
 				add_post_meta( $event_post_tag_id, $this->all_day, $all_day_event );
 
 				if ( function_exists( 'wpml_get_language_information' ) && function_exists( 'wpml_add_translatable_content' ) ) {
-					$language = substr( wpml_get_language_information( $post_id )['locale'], 0, 2 );
+					$lang     = wpml_get_language_information( $post_id );
+					$language = substr( fw_akg( 'locale', $lang ), 0, 2 );
 
 					if ( ! empty( $language ) ) {
 						wpml_add_translatable_content( 'post_' . $this->post_type, $event_post_tag_id, $language );
