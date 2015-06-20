@@ -105,7 +105,8 @@
 
 	fwe.on('fw:options:init', function(data) {
 		data.$elements
-			.find('.fw-option-type-event').each(init)
+			.find('.fw-option-type-event:not(.fw-option-initialized)')
+			.each(init)
 			.addClass('fw-option-initialized');
 	});
 
