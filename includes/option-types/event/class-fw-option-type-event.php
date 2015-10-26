@@ -122,6 +122,9 @@ class FW_Option_Type_Event extends FW_Option_Type {
 			array(),
 			fw()->manifest->get_version()
 		);
+
+		fw()->backend->enqueue_options_static($this->internal_options);
+
 	}
 
 
