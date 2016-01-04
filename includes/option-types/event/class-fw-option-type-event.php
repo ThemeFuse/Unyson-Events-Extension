@@ -66,26 +66,26 @@ class FW_Option_Type_Event extends FW_Option_Type {
 						'type'  => 'datetime-range',
 						'label' => __( 'Start & End of Event', 'fw' ),
 						'desc'  => __( 'Set start and end events datetime', 'fw' ),
-						'datetime-pickers' => array(
+						'datetime-pickers' => apply_filters( 'fw_option_type_event_datetime_pickers', array(
 							'from' => array(
-								'maxDate' => $this->max_date,
-								'minDate' => $this->min_date,
-								'extra-formats'=> array($this->only_date_format),
-								'fixed' => true,
-								'timepicker' => true,
-								'datepicker' => true,
-								'defaultTime' => '08:00'
+								'maxDate'       => $this->max_date,
+								'minDate'       => $this->min_date,
+								'extra-formats' => array( $this->only_date_format ),
+								'fixed'         => true,
+								'timepicker'    => true,
+								'datepicker'    => true,
+								'defaultTime'   => '08:00'
 							),
-							'to' => array(
-								'maxDate' => $this->max_date,
-								'minDate' => $this->min_date,
-								'extra-formats'=> array($this->only_date_format),
-								'fixed' => true,
-								'timepicker' => true,
-								'datepicker' => true,
-								'defaultTime' => '18:00'
+							'to'   => array(
+								'maxDate'       => $this->max_date,
+								'minDate'       => $this->min_date,
+								'extra-formats' => array( $this->only_date_format ),
+								'fixed'         => true,
+								'timepicker'    => true,
+								'datepicker'    => true,
+								'defaultTime'   => '18:00'
 							)
-						),
+						) ),
 						'value' => array(
 							'from' => '',
 							'to'   => ''
