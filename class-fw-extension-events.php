@@ -42,6 +42,7 @@ class FW_Extension_Events extends FW_Extension {
 		$this->register_taxonomy();
 
 		if ( is_admin() ) {
+			$this->save_permalink_structure();
 			$this->add_admin_filters();
 			$this->add_admin_actions();
 		} else {
@@ -49,9 +50,75 @@ class FW_Extension_Events extends FW_Extension {
 		}
 	}
 
+	private function save_permalink_structure() {
+
+		if ( ! isset( $_POST['permalink_structure'] ) && ! isset( $_POST['category_base'] ) ) {
+			return;
+		}
+
+		$post = FW_Request::POST( 'fw_ext_events_event_slug',
+			apply_filters( 'fw_ext_' . $this->get_name() . '_post_slug', $this->post_type_slug )
+		);
+
+		$taxonomy = FW_Request::POST( 'fw_ext_events_taxonomy_slug',
+			apply_filters( 'fw_ext_' . $this->get_name() . '_taxonomy_slug', $this->taxonomy_slug )
+		);
+
+
+		$this->set_db_data( 'permalinks/post', $post );
+		$this->set_db_data( 'permalinks/taxonomy', $taxonomy );
+	}
+
+	/**
+	 * @internal
+	 **/
+	public function _action_add_permalink_in_settings() {
+		add_settings_field(
+			'fw_ext_events_event_slug',
+			__( 'Event base', 'fw' ),
+			array( $this, '_event_slug_input' ),
+			'permalink',
+			'optional'
+		);
+
+		add_settings_field(
+			'fw_ext_events_taxonomy_slug',
+			__( 'Events category base', 'fw' ),
+			array( $this, '_taxonomy_slug_input' ),
+			'permalink',
+			'optional'
+		);
+	}
+
+	/**
+	 * @internal
+	 */
+	public function _event_slug_input() {
+		?>
+		<input type="text" name="fw_ext_events_event_slug" value="<?php echo $this->post_type_slug; ?>">
+		<code>/my-event</code>
+		<?php
+	}
+
+	/**
+	 * @internal
+	 */
+	public function _taxonomy_slug_input() {
+		?>
+		<input type="text" name="fw_ext_events_taxonomy_slug" value="<?php echo $this->taxonomy_slug; ?>">
+		<code>/my-events-category</code>
+		<?php
+	}
+
 	private function define_slugs() {
-		$this->post_type_slug = apply_filters( 'fw_ext_' . $this->get_name() . '_post_slug', $this->post_type_slug );
-		$this->taxonomy_slug  = apply_filters( 'fw_ext_' . $this->get_name() . '_taxonomy_slug', $this->taxonomy_slug );
+		$this->post_type_slug = $this->get_db_data(
+			'permalinks/post',
+			apply_filters( 'fw_ext_' . $this->get_name() . '_post_slug', $this->post_type_slug )
+		);
+		$this->taxonomy_slug  = $this->get_db_data(
+			'permalinks/taxonomy',
+			apply_filters( 'fw_ext_' . $this->get_name() . '_taxonomy_slug', $this->taxonomy_slug )
+		);
 	}
 
 	private function register_post_type() {
@@ -163,6 +230,7 @@ class FW_Extension_Events extends FW_Extension {
 		);
 		add_action( 'admin_enqueue_scripts', array( $this, '_action_enqueue_scripts' ) );
 		add_action( 'admin_head', array( $this, '_action_initial_nav_menu_meta_boxes' ), 999 );
+		add_action( 'admin_init', array( $this, '_action_add_permalink_in_settings' ) );
 	}
 
 	private function add_theme_actions() {
@@ -172,7 +240,9 @@ class FW_Extension_Events extends FW_Extension {
 	/**
 	 * Modifies table structure for 'All Events' admin page
 	 *
-	 * @internal
+	 * @param $columns
+	 *
+	 * @return array
 	 */
 	public function _filter_add_columns( $columns ) {
 		unset( $columns['date'], $columns[ 'taxonomy-' . $this->taxonomy_name ] );
@@ -188,6 +258,11 @@ class FW_Extension_Events extends FW_Extension {
 	 * Adds event options for it's custom post type
 	 *
 	 * @internal
+	 *
+	 * @param $post_options
+	 * @param $post_type
+	 *
+	 * @return array
 	 */
 	public function _filter_fw_post_options( $post_options, $post_type ) {
 		if ( $post_type !== $this->post_type_name ) {
@@ -237,6 +312,9 @@ class FW_Extension_Events extends FW_Extension {
 	 * Fill custom column
 	 *
 	 * @internal
+	 *
+	 * @param $column
+	 * @param $post_id
 	 */
 	public function _action_manage_custom_column( $column, $post_id ) {
 		switch ( $column ) {
