@@ -62,6 +62,8 @@ class FW_Option_Type_Event extends FW_Option_Type {
 				'attr' => array('class' => 'fw-event-datetime'),
 				'template' => '{{  if (event_date_range.from !== "" || event_date_range.to !== "") {  print(event_date_range.from + " - " + event_date_range.to)} else { print("' . __('Note: Please set start & end event datetime', 'fw') . '")} }}',
 				'popup-options' => array(
+					apply_filters('fw_option_type_event_popup_options:before', array()),
+
 					'event_date_range' => array(
 						'type'  => 'datetime-range',
 						'label' => __( 'Start & End of Event', 'fw' ),
@@ -99,6 +101,8 @@ class FW_Option_Type_Event extends FW_Option_Type {
 						'desc'       => __('Link this event to a specific user', 'fw'),
 						'value'      => array()
 					),
+
+					apply_filters('fw_option_type_event_popup_options:after', array()),
 				),
 			),
 
