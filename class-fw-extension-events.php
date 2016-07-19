@@ -7,6 +7,8 @@ class FW_Extension_Events extends FW_Extension {
 	private $post_type_slug = 'fw-event-slug';
 	private $taxonomy_name = 'fw-event-taxonomy-name';
 	private $taxonomy_slug = 'fw-event-taxonomy-slug';
+	private $taxonomy_tag_name = 'fw-event-tag';
+	private $taxonomy_tag_slug = 'event-tag';
 
 	/**
 	 * @var string main option key
@@ -177,24 +179,22 @@ class FW_Extension_Events extends FW_Extension {
 				'plural'   => __( 'Categories', 'fw' )
 			) );
 
-		$labels = array(
-			'name'              => sprintf( _x( 'Event %s', 'taxonomy general name', 'fw' ),
-				$category_names['plural'] ),
-			'singular_name'     => sprintf( _x( 'Event %s', 'taxonomy singular name', 'fw' ),
-				$category_names['singular'] ),
-			'search_items'      => sprintf( __( 'Search %s', 'fw' ), $category_names['plural'] ),
-			'all_items'         => sprintf( __( 'All %s', 'fw' ), $category_names['plural'] ),
-			'parent_item'       => sprintf( __( 'Parent %s', 'fw' ), $category_names['singular'] ),
-			'parent_item_colon' => sprintf( __( 'Parent %s:', 'fw' ), $category_names['singular'] ),
-			'edit_item'         => sprintf( __( 'Edit %s', 'fw' ), $category_names['singular'] ),
-			'update_item'       => sprintf( __( 'Update %s', 'fw' ), $category_names['singular'] ),
-			'add_new_item'      => sprintf( __( 'Add New %s', 'fw' ), $category_names['singular'] ),
-			'new_item_name'     => sprintf( __( 'New %s Name', 'fw' ), $category_names['singular'] ),
-			'menu_name'         => sprintf( __( '%s', 'fw' ), $category_names['plural'] )
-		);
-
-		$args = array(
-			'labels'            => $labels,
+		register_taxonomy( $this->taxonomy_name, $this->post_type_name, array(
+			'labels'            => array(
+				'name'              => sprintf( _x( 'Event %s', 'taxonomy general name', 'fw' ),
+					$category_names['plural'] ),
+				'singular_name'     => sprintf( _x( 'Event %s', 'taxonomy singular name', 'fw' ),
+					$category_names['singular'] ),
+				'search_items'      => sprintf( __( 'Search %s', 'fw' ), $category_names['plural'] ),
+				'all_items'         => sprintf( __( 'All %s', 'fw' ), $category_names['plural'] ),
+				'parent_item'       => sprintf( __( 'Parent %s', 'fw' ), $category_names['singular'] ),
+				'parent_item_colon' => sprintf( __( 'Parent %s:', 'fw' ), $category_names['singular'] ),
+				'edit_item'         => sprintf( __( 'Edit %s', 'fw' ), $category_names['singular'] ),
+				'update_item'       => sprintf( __( 'Update %s', 'fw' ), $category_names['singular'] ),
+				'add_new_item'      => sprintf( __( 'Add New %s', 'fw' ), $category_names['singular'] ),
+				'new_item_name'     => sprintf( __( 'New %s Name', 'fw' ), $category_names['singular'] ),
+				'menu_name'         => sprintf( __( '%s', 'fw' ), $category_names['plural'] )
+			),
 			'public'            => true,
 			'hierarchical'      => true,
 			'show_ui'           => true,
@@ -205,9 +205,43 @@ class FW_Extension_Events extends FW_Extension {
 			'rewrite'           => array(
 				'slug' => $this->taxonomy_slug
 			),
-		);
+		) );
 
-		register_taxonomy( $this->taxonomy_name, esc_attr( $this->post_type_name ), $args );
+		/**
+		 * @since 1.0.11
+		 */
+		if ( apply_filters('fw:ext:events:enable-tags', false) ) {
+			$tag_names = apply_filters( 'fw_ext_events_tag_name', array(
+				'singular' => __( 'Tag', 'fw' ),
+				'plural'   => __( 'Tags', 'fw' )
+			) );
+
+			register_taxonomy($this->taxonomy_tag_name, $this->post_type_name, array(
+				'hierarchical' => false,
+				'labels' => array(
+					'name'              => $tag_names['plural'],
+					'singular_name'     => $tag_names['singular'],
+					'search_items'      => sprintf( __('Search %s','fw'), $tag_names['plural']),
+					'popular_items'     => sprintf( __( 'Popular %s','fw' ), $tag_names['plural']),
+					'all_items'         => sprintf( __('All %s','fw'), $tag_names['plural']),
+					'parent_item'       => null,
+					'parent_item_colon' => null,
+					'edit_item'         => sprintf( __('Edit %s','fw'), $tag_names['singular'] ),
+					'update_item'       => sprintf( __('Update %s','fw'), $tag_names['singular'] ),
+					'add_new_item'      => sprintf( __('Add New %s','fw'), $tag_names['singular'] ),
+					'new_item_name'     => sprintf( __('New %s Name','fw'), $tag_names['singular'] ),
+					'separate_items_with_commas'    => sprintf( __( 'Separate %s with commas','fw' ), strtolower($tag_names['plural'])),
+					'add_or_remove_items'           => sprintf( __( 'Add or remove %s','fw' ), strtolower($tag_names['plural'])),
+					'choose_from_most_used'         => sprintf( __( 'Choose from the most used %s','fw' ), strtolower($tag_names['plural'])),
+				),
+				'public' => true,
+				'show_ui' => true,
+				'query_var' => true,
+				'rewrite' => array(
+					'slug' => $this->taxonomy_tag_slug
+				),
+			));
+		}
 	}
 
 	private function add_admin_filters() {
