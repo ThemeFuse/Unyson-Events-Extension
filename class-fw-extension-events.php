@@ -50,25 +50,29 @@ class FW_Extension_Events extends FW_Extension {
 		} else {
 			$this->add_theme_actions();
 		}
+
+		add_filter( 'fw_post_options', array( $this, '_filter_fw_post_options' ), 10, 2 );
 	}
 
 	private function save_permalink_structure() {
-
 		if ( ! isset( $_POST['permalink_structure'] ) && ! isset( $_POST['category_base'] ) ) {
 			return;
 		}
 
-		$post = FW_Request::POST( 'fw_ext_events_event_slug',
-			apply_filters( 'fw_ext_' . $this->get_name() . '_post_slug', $this->post_type_slug )
+		$this->set_db_data(
+			'permalinks/post',
+			FW_Request::POST(
+				'fw_ext_events_event_slug',
+				apply_filters( 'fw_ext_' . $this->get_name() . '_post_slug', $this->post_type_slug )
+			)
 		);
-
-		$taxonomy = FW_Request::POST( 'fw_ext_events_taxonomy_slug',
-			apply_filters( 'fw_ext_' . $this->get_name() . '_taxonomy_slug', $this->taxonomy_slug )
+		$this->set_db_data(
+			'permalinks/taxonomy',
+			FW_Request::POST(
+				'fw_ext_events_taxonomy_slug',
+				apply_filters( 'fw_ext_' . $this->get_name() . '_taxonomy_slug', $this->taxonomy_slug )
+			)
 		);
-
-
-		$this->set_db_data( 'permalinks/post', $post );
-		$this->set_db_data( 'permalinks/taxonomy', $taxonomy );
 	}
 
 	/**
@@ -251,7 +255,6 @@ class FW_Extension_Events extends FW_Extension {
 			10,
 			1
 		);
-		add_filter( 'fw_post_options', array( $this, '_filter_fw_post_options' ), 10, 2 );
 		add_filter( 'months_dropdown_results', array( $this, '_filter_months_dropdown_results' ) );
 	}
 
@@ -317,6 +320,10 @@ class FW_Extension_Events extends FW_Extension {
 					)
 				)
 			) );
+
+		if (empty($event_options)) {
+			return $post_options;
+		}
 
 		if ( isset( $post_options['man'] ) && $post_options['main']['type'] === 'box' ) {
 			$post_options['main']['options'][] = $event_options;
