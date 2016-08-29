@@ -49,3 +49,8 @@ function _filter_fw_ext_events_template_include( $template ) {
 }
 
 add_filter( 'template_include', '_filter_fw_ext_events_template_include' );
+
+function _action_fw_ext_events_option_types_init() {
+	require_once dirname( __FILE__ ) . '/includes/option-types/event/class-fw-option-type-event.php';
+}
+add_action( 'fw_option_types_init', '_action_fw_ext_events_option_types_init' );
