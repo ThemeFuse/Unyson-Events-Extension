@@ -572,6 +572,11 @@ class FW_Extension_Events_Tags extends FW_Extension {
 		$i            = 0;
 		//fill return value with shrortcode Calendar supported data structure
 		foreach ( $result as $event_id => $intervals ) {
+
+			if ( is_null( get_post( $event_id ) ) ) {
+				continue;
+			}
+
 			$title = get_the_title( $event_id );
 			$url   = get_permalink( $event_id );
 			foreach ( $intervals as $interval ) {
