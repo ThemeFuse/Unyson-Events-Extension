@@ -6,7 +6,7 @@ $manifest = array();
 
 $manifest['name']        = __( 'Events', 'fw' );
 $manifest['description'] = __( 'This extension adds a fully fledged Events module to your theme. It comes with built in pages that contain a calendar where events can be added.', 'fw' );
-$manifest['version'] = '1.0.11';
+$manifest['version'] = '1.0.12';
 $manifest['display'] = true;
 $manifest['standalone'] = true;
 
