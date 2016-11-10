@@ -9,5 +9,9 @@ $manifest['description'] = __( 'This extension adds a fully fledged Events modul
 $manifest['version'] = '1.0.12';
 $manifest['display'] = true;
 $manifest['standalone'] = true;
+$manifest['github_repo'] = 'https://github.com/ThemeFuse/Unyson-Events-Extension';
+$manifest['uri'] = 'http://manual.unyson.io/en/latest/extension/events/index.html#content';
+$manifest['author'] = 'ThemeFuse';
+$manifest['author_uri'] = 'http://themefuse.com/';
 
 $manifest['github_update'] = 'ThemeFuse/Unyson-Events-Extension';
