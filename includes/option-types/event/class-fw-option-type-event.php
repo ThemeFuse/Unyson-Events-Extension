@@ -114,8 +114,6 @@ class FW_Option_Type_Event extends FW_Option_Type {
 					apply_filters('fw_option_type_event_popup_options:after', array()),
 				),
 			),
-
-
 		);
 	}
 
@@ -137,7 +135,6 @@ class FW_Option_Type_Event extends FW_Option_Type {
 		);
 
 		fw()->backend->enqueue_options_static($this->internal_options);
-
 	}
 
 
@@ -159,7 +156,6 @@ class FW_Option_Type_Event extends FW_Option_Type {
 	 */
 	protected function _get_value_from_input($option, $input_value)
 	{
-
 		if (is_null($input_value)) {
 			return $option['value'];
 		} else {
@@ -199,9 +195,38 @@ class FW_Option_Type_Event extends FW_Option_Type {
 	protected function _get_defaults()
 	{
 		return array(
-			'value' => array(
-			)
+			'value' => array()
 		);
+	}
+
+	protected function _storage_save($id, array $option, $value, array $params)
+	{
+		$value[$gmaps_option_id] = fw_db_option_storage_save(
+			$gmaps_option_id = '_gmaps_api_key',
+			array_merge( // use 'fw-storage' default param
+				fw()->backend->option_type($this->internal_options[$gmaps_option_id]['type'])->get_defaults(),
+				$this->internal_options[$gmaps_option_id]
+			),
+			isset($value[$gmaps_option_id]) ? $value[$gmaps_option_id] : null,
+			$params
+		);
+
+		return parent::_storage_save($id, $option, $value, $params);
+	}
+
+	protected function _storage_load($id, array $option, $value, array $params)
+	{
+		$value[$gmaps_option_id] = fw_db_option_storage_load(
+			$gmaps_option_id = '_gmaps_api_key',
+			array_merge( // use 'fw-storage' default param
+				fw()->backend->option_type($this->internal_options[$gmaps_option_id]['type'])->get_defaults(),
+				$this->internal_options[$gmaps_option_id]
+			),
+			isset($value[$gmaps_option_id]) ? $value[$gmaps_option_id] : null,
+			$params
+		);
+
+		return parent::_storage_load($id, $option, $value, $params);
 	}
 
 }
