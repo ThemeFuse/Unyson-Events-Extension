@@ -6,7 +6,7 @@ $manifest = array();
 
 $manifest['name']        = __( 'Events', 'fw' );
 $manifest['description'] = __( 'This extension adds a fully fledged Events module to your theme. It comes with built in pages that contain a calendar where events can be added.', 'fw' );
-$manifest['version'] = '1.0.12';
+$manifest['version'] = '1.0.13';
 $manifest['display'] = true;
 $manifest['standalone'] = true;
 $manifest['github_repo'] = 'https://github.com/ThemeFuse/Unyson-Events-Extension';
