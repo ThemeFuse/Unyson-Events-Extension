@@ -22,17 +22,26 @@ class FW_Option_Type_Event extends FW_Option_Type {
 		return 'event';
 	}
 
-	/**
-	 * @internal
-	 */
+	/** @internal */
 	public function _init() {
 		$ext = fw()->extensions->get( 'events' );
+
 		self::$extension = array(
 			'path' => $ext->get_declared_path(),
 			'URI'  => $ext->get_declared_URI()
 		);
 
 		$this->internal_options = array(
+			'_gmaps_api_key' => array(
+				'type' => 'gmap-key',
+				'label' => __('Maps API Key'),
+				'desc' => sprintf(
+					__( 'Create an application in %sGoogle Console%s and add the Key here.', 'fw' ),
+					'<a href="https://console.developers.google.com/flows/enableapi?apiid=places_backend,maps_backend,geocoding_backend,directions_backend,distance_matrix_backend,elevation_backend&keyType=CLIENT_SIDE&reusekey=true">',
+					'</a>'
+				),
+			),
+
 			'event_location' => array(
 				'label' => __('Event Location', 'fw'),
 				'type'  => 'map',
