@@ -37,7 +37,7 @@ class FW_Option_Type_Event extends FW_Option_Type {
 				'label' => __('Maps API Key'),
 				'desc' => sprintf(
 					__( 'Create an application in %sGoogle Console%s and add the Key here.', 'fw' ),
-					'<a href="https://console.developers.google.com/flows/enableapi?apiid=places_backend,maps_backend,geocoding_backend,directions_backend,distance_matrix_backend,elevation_backend&keyType=CLIENT_SIDE&reusekey=true">',
+					'<a target="_blank" href="https://console.developers.google.com/flows/enableapi?apiid=places_backend,maps_backend,geocoding_backend,directions_backend,distance_matrix_backend,elevation_backend&keyType=CLIENT_SIDE&reusekey=true">',
 					'</a>'
 				),
 			),
