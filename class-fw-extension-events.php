@@ -163,7 +163,7 @@ class FW_Extension_Events extends FW_Extension {
 					'slug' => $this->post_type_slug
 				),
 				'menu_position'      => 5,
-				'show_in_nav_menus'  => false,
+				'show_in_nav_menus'  => true,
 				'menu_icon'          => 'dashicons-calendar',
 				'hierarchical'       => false,
 				'query_var'          => true,
