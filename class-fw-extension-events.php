@@ -329,7 +329,7 @@ class FW_Extension_Events extends FW_Extension {
 			$post_options['main']['options'][] = $event_options;
 		} else {
 			$post_options['main'] = array(
-				'title'   => false,
+				'title'   => esc_html__( 'Event Settings', 'fw' ),
 				'desc'    => false,
 				'type'    => 'box',
 				'options' => $event_options
