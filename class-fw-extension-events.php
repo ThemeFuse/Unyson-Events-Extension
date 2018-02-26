@@ -172,6 +172,7 @@ class FW_Extension_Events extends FW_Extension {
 					'title', /* Text input field to create a post title. */
 					'editor',
 					'thumbnail', /* Displays a box for featured image. */
+					'revisions'
 				)
 			) );
 	}
