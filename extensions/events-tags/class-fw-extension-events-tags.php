@@ -346,7 +346,8 @@ class FW_Extension_Events_Tags extends FW_Extension {
 		$args = array(
 			'post_parent' => $post_id,
 			'post_type'   => $this->post_type,
-			'post_status' => 'any'
+			'post_status' => 'any',
+			'numberposts' => -1
 		);
 
 		$posts = get_posts( $args );
