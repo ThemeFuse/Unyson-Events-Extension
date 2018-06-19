@@ -11,6 +11,11 @@
 		 * Update date_time format consider checkbox value
 		 */
 		fwe.on('fw:options:datetime-range:before-init', function(data){
+
+			if ( ! data.el.is( '#fw-edit-options-modal-event_date_range' ) ) {
+				return;
+			}
+
 			var $dateTimeFirstWrapper = data.el.find('.fw-option-type-datetime-picker:first'),
 				$dateTimeLastWrapper = data.el.find('.fw-option-type-datetime-picker:last'),
 				$dateTimeFirstInput = data.el.find('input'),
