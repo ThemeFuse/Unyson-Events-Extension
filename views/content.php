@@ -13,8 +13,8 @@ $options = fw_get_db_post_option($post->ID, fw()->extensions->get( 'events' )->g
 	<?php endif; ?>
 
 	<div class="details-event-button">
-		<button data-uri="<?php echo add_query_arg( array( 'row_id' => $key, 'calendar' => 'google' ), fw_current_url() ); ?>" type="button"><?php _e('Google Calendar', 'fw') ?></button>
-		<button data-uri="<?php echo add_query_arg( array( 'row_id' => $key, 'calendar' => 'ical'   ), fw_current_url() ); ?>" type="button"><?php _e('Ical Export', 'fw') ?></button>
+		<button data-uri="<?php echo esc_attr(add_query_arg( array( 'row_id' => $key, 'calendar' => 'google' ), fw_current_url() )); ?>" type="button"><?php _e('Google Calendar', 'fw') ?></button>
+		<button data-uri="<?php echo esc_attr(add_query_arg( array( 'row_id' => $key, 'calendar' => 'ical'   ), fw_current_url() )); ?>" type="button"><?php _e('Ical Export', 'fw') ?></button>
 	</div>
 	<ul class="details-event">
 		<li><b><?php _e('Start', 'fw') ?>:</b> <?php echo $row['event_date_range']['from']; ?></li>

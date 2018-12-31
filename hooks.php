@@ -36,16 +36,37 @@ function _filter_fw_ext_events_template_include( $template ) {
 	$events = fw()->extensions->get( 'events' );
 
 	if ( is_singular( $events->get_post_type_name() ) ) {
-		if ( $events->locate_view_path( 'single' ) ) {
-			return $events->locate_view_path( 'single' );
+
+		if ( preg_match( '/single-' . '.*\.php/i', basename( $template ) ) === 1 ) {
+			return $template;
 		}
 
-		add_filter( 'the_content', '_filter_fw_ext_events_the_content' );
+		if ( $events->locate_view_path( 'single' ) ) {
+			return $events->locate_view_path( 'single' );
+		} else {
+			add_filter( 'the_content', '_filter_fw_ext_portfolio_the_content' );
+		}
 	} else if ( is_tax( $events->get_taxonomy_name() ) && $events->locate_view_path( 'taxonomy' ) ) {
+
+		if ( preg_match( '/taxonomy-' . '.*\.php/i', basename( $template ) ) === 1 ) {
+			return $template;
+		}
+
 		return $events->locate_view_path( 'taxonomy' );
+	} else if ( is_post_type_archive( $events->get_post_type_name() ) && $events->locate_view_path( 'archive' ) ) {
+		if ( preg_match( '/archive-' . '.*\.php/i', basename( $template ) ) === 1 ) {
+			return $template;
+		}
+
+		return $events->locate_view_path( 'archive' );
 	}
 
 	return $template;
 }
 
 add_filter( 'template_include', '_filter_fw_ext_events_template_include' );
+
+function _action_fw_ext_events_option_types_init() {
+	require_once dirname( __FILE__ ) . '/includes/option-types/event/class-fw-option-type-event.php';
+}
+add_action( 'fw_option_types_init', '_action_fw_ext_events_option_types_init' );

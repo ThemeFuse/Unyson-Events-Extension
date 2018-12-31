@@ -22,17 +22,26 @@ class FW_Option_Type_Event extends FW_Option_Type {
 		return 'event';
 	}
 
-	/**
-	 * @internal
-	 */
+	/** @internal */
 	public function _init() {
 		$ext = fw()->extensions->get( 'events' );
+
 		self::$extension = array(
 			'path' => $ext->get_declared_path(),
 			'URI'  => $ext->get_declared_URI()
 		);
 
 		$this->internal_options = array(
+			'_gmaps_api_key' => array(
+				'type' => 'gmap-key',
+				'label' => __('Maps API Key'),
+				'desc' => sprintf(
+					__( 'Create an application in %sGoogle Console%s and add the Key here.', 'fw' ),
+					'<a target="_blank" href="https://console.developers.google.com/flows/enableapi?apiid=places_backend,maps_backend,geocoding_backend,directions_backend,distance_matrix_backend,elevation_backend&keyType=CLIENT_SIDE&reusekey=true">',
+					'</a>'
+				),
+			),
+
 			'event_location' => array(
 				'label' => __('Event Location', 'fw'),
 				'type'  => 'map',
@@ -62,6 +71,8 @@ class FW_Option_Type_Event extends FW_Option_Type {
 				'attr' => array('class' => 'fw-event-datetime'),
 				'template' => '{{  if (event_date_range.from !== "" || event_date_range.to !== "") {  print(event_date_range.from + " - " + event_date_range.to)} else { print("' . __('Note: Please set start & end event datetime', 'fw') . '")} }}',
 				'popup-options' => array(
+					apply_filters('fw_option_type_event_popup_options:before', array()),
+
 					'event_date_range' => array(
 						'type'  => 'datetime-range',
 						'label' => __( 'Start & End of Event', 'fw' ),
@@ -99,10 +110,10 @@ class FW_Option_Type_Event extends FW_Option_Type {
 						'desc'       => __('Link this event to a specific user', 'fw'),
 						'value'      => array()
 					),
+
+					apply_filters('fw_option_type_event_popup_options:after', array()),
 				),
 			),
-
-
 		);
 	}
 
@@ -124,7 +135,6 @@ class FW_Option_Type_Event extends FW_Option_Type {
 		);
 
 		fw()->backend->enqueue_options_static($this->internal_options);
-
 	}
 
 
@@ -146,7 +156,6 @@ class FW_Option_Type_Event extends FW_Option_Type {
 	 */
 	protected function _get_value_from_input($option, $input_value)
 	{
-
 		if (is_null($input_value)) {
 			return $option['value'];
 		} else {
@@ -186,9 +195,38 @@ class FW_Option_Type_Event extends FW_Option_Type {
 	protected function _get_defaults()
 	{
 		return array(
-			'value' => array(
-			)
+			'value' => array()
 		);
+	}
+
+	protected function _storage_save($id, array $option, $value, array $params)
+	{
+		$value[$gmaps_option_id] = fw_db_option_storage_save(
+			$gmaps_option_id = '_gmaps_api_key',
+			array_merge( // use 'fw-storage' default param
+				fw()->backend->option_type($this->internal_options[$gmaps_option_id]['type'])->get_defaults(),
+				$this->internal_options[$gmaps_option_id]
+			),
+			isset($value[$gmaps_option_id]) ? $value[$gmaps_option_id] : null,
+			$params
+		);
+
+		return parent::_storage_save($id, $option, $value, $params);
+	}
+
+	protected function _storage_load($id, array $option, $value, array $params)
+	{
+		$value[$gmaps_option_id] = fw_db_option_storage_load(
+			$gmaps_option_id = '_gmaps_api_key',
+			array_merge( // use 'fw-storage' default param
+				fw()->backend->option_type($this->internal_options[$gmaps_option_id]['type'])->get_defaults(),
+				$this->internal_options[$gmaps_option_id]
+			),
+			isset($value[$gmaps_option_id]) ? $value[$gmaps_option_id] : null,
+			$params
+		);
+
+		return parent::_storage_load($id, $option, $value, $params);
 	}
 
 }

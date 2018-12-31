@@ -246,6 +246,7 @@ class FW_Extension_Events_Tags extends FW_Extension {
 	private function admin_actions() {
 		add_action( 'fw_save_post_options', array( $this, '_action_admin_on_save_event' ) );
 		add_action( 'before_delete_post', array( $this, '_action_admin_on_delete_event' ) );
+		add_action( 'transition_post_status', array( $this, 'set_childs_status' ), 10, 3 );
 
 		$time = (int) $this->get_db_data( 'last_updated', 0 );
 
@@ -267,6 +268,7 @@ class FW_Extension_Events_Tags extends FW_Extension {
 
 		$this->_fw_remove_all_event_children_data( $post_id );
 		$this->_fw_insert_all_event_children_data( $post_id );
+		$this->set_childs_status( get_post_status( $post_id ), '', $post_id );
 	}
 
 	/**
@@ -279,6 +281,32 @@ class FW_Extension_Events_Tags extends FW_Extension {
 			return;
 		}
 		$this->_fw_remove_all_event_children_data( $post_id );
+	}
+
+	/**
+	 * @internal
+	 *
+	 * @param $post_id
+	 */
+	public function set_childs_status( $new_status, $old_status, $post ) {
+
+		$post_id = is_object( $post ) ? $post->ID : $post;
+
+		if ( get_post_type( $post_id ) !== $this->parent->get_post_type_name() ) {
+			return;
+		}
+
+		global $wpdb;
+
+		$childs = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_parent='%d' AND post_type='{$this->post_type}'", $post_id ), ARRAY_A );
+
+		if ( ! $childs ) {
+			return;
+		}
+
+		foreach ( $childs as $child ) {
+			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_status = %s WHERE ID = %d AND post_type = %s", $new_status, $child['ID'], $this->post_type ) );
+		}
 	}
 
 	/**
@@ -306,7 +334,6 @@ class FW_Extension_Events_Tags extends FW_Extension {
 				'author'
 			)
 		) );
-
 	}
 
 	/**
@@ -319,7 +346,8 @@ class FW_Extension_Events_Tags extends FW_Extension {
 		$args = array(
 			'post_parent' => $post_id,
 			'post_type'   => $this->post_type,
-			'post_status' => 'any'
+			'post_status' => 'any',
+			'numberposts' => -1
 		);
 
 		$posts = get_posts( $args );
@@ -329,9 +357,7 @@ class FW_Extension_Events_Tags extends FW_Extension {
 			foreach ( $posts as $post ) {
 				wp_delete_post( $post->ID, true );
 			}
-
 		}
-
 	}
 
 	/**
@@ -449,7 +475,8 @@ class FW_Extension_Events_Tags extends FW_Extension {
 
 		$args = array(
 			'post_type'      => $this->post_type,
-			'posts_per_page' => - 1,
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
 			'meta_query'     => array(
 				'relation' => 'OR',
 				array(
@@ -572,6 +599,11 @@ class FW_Extension_Events_Tags extends FW_Extension {
 		$i            = 0;
 		//fill return value with shrortcode Calendar supported data structure
 		foreach ( $result as $event_id => $intervals ) {
+
+			if ( is_null( get_post( $event_id ) ) ) {
+				continue;
+			}
+
 			$title = get_the_title( $event_id );
 			$url   = get_permalink( $event_id );
 			foreach ( $intervals as $interval ) {
