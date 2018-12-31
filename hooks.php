@@ -44,7 +44,10 @@ function _filter_fw_ext_events_template_include( $template ) {
 		if ( $events->locate_view_path( 'single' ) ) {
 			return $events->locate_view_path( 'single' );
 		} else {
-			add_filter( 'the_content', '_filter_fw_ext_portfolio_the_content' );
+			$portfolio_acitive = function_exists('_filter_fw_ext_portfolio_the_content');
+			if ($portfolio_acitive) {
+				add_filter( 'the_content', '_filter_fw_ext_portfolio_the_content' );
+			}
 		}
 	} else if ( is_tax( $events->get_taxonomy_name() ) && $events->locate_view_path( 'taxonomy' ) ) {
 
