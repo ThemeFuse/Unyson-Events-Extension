@@ -79,12 +79,12 @@
 			$eventsPopup.find('.item:not(.disabled)').each(function(){
 				var data = $.parseJSON($(this).find('input').val());
 				if (data.event_date_range.from !== "" && data.event_date_range.to !== "" ) {
-					var from = new Date(data.event_date_range.from),
-						to = new Date(data.event_date_range.to);
+					var from = moment(data.event_date_range.from,'YYYY/MM/DD HH:mm').toDate(),
+						to = moment(data.event_date_range.to,'YYYY/MM/DD HH:mm').toDate();
 
 					if (allDay) {
-						$(this).find('input').data('from-time', moment(from.toISOString()).format('HH:mm') );
-						$(this).find('input').data('to-time', moment(to.toISOString()).format('HH:mm'));
+						$(this).find('input').data('from-time', moment(from).format('HH:mm') );
+						$(this).find('input').data('to-time', moment(to).format('HH:mm'));
 					} else {
 						var fromTime = moment($(this).find('input').data('from-time'), 'HH:mm').toDate(),
 							toTime = moment($(this).find('input').data('to-time'), 'HH:mm').toDate();
@@ -96,8 +96,8 @@
 
 					}
 
-					data.event_date_range.from = moment(from.toISOString()).format(momentFormat);
-					data.event_date_range.to =  moment(to.toISOString()).format(momentFormat);
+					data.event_date_range.from = moment(from).format(momentFormat);
+					data.event_date_range.to =  moment(to).format(momentFormat);
 
 					$(this).find('input').val(JSON.stringify(data));
 					$(this).find('.content').text(data.event_date_range.from + ' - ' + data.event_date_range.to);
